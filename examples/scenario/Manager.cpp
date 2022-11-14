@@ -1,12 +1,14 @@
 #include "Manager.h"
 #include "Point2D.h"
 #include "generators/RandomGenerator.h"
+#include "generators/MyGenerator.h"
 #include <chrono>
 #include <iostream>
 Manager::Manager(Engine* engine, int size)
     : GameObject(engine) {
-  // todo: add your generator here
-  generators.push_back(new RandomScenarioGenerator());
+    // todo: add your generator here
+    generators.push_back(new MyGenerator());
+    generators.push_back(new RandomScenarioGenerator());
 }
 
 void Manager::SetPixels(std::vector<Color32> &input) {
@@ -142,5 +144,5 @@ void Manager::step() {
   auto step = std::chrono::high_resolution_clock::now();
   SetPixels(pixels);
   auto end = std::chrono::high_resolution_clock::now();
-  std::cout <<  std::chrono::duration_cast<std::chrono::microseconds>(step - start).count() << " " << std::chrono::duration_cast<std::chrono::microseconds>(end - step).count() << std::endl;
+  //std::cout <<  std::chrono::duration_cast<std::chrono::microseconds>(step - start).count() << " " << std::chrono::duration_cast<std::chrono::microseconds>(end - step).count() << std::endl;
 }
