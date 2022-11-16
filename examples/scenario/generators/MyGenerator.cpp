@@ -14,13 +14,15 @@ std::vector<Color32> MyGenerator::Generate(int sideSize, float displacement)
     {
         for (int c = 0; c < sideSize; c++)
         {
-            float nx = (2.0 * (float)c) / (float)sideSize - 1;
-            float ny = (2.0 * (float)l) / (float)sideSize - 1;
-            float d = 1.0 - (1.0 - (nx * nx) * (1.0 - (ny * ny)));
-            //float d = std::min(1, ((nx * nx) + (ny * ny) / sqrt(2)));
-            //d *= 255;
+            float nx = ((2.0 * (float)c + 1) / (float)sideSize) - 1.0;
+            float ny = ((2.0 * (float)l + 1) / (float)sideSize) - 1.0;
+            float d = std::min(1.0, ((nx * nx) + (ny * ny)) / sqrt(2.0));
+            //float d = 1.0 - (1.0 - (nx * nx) * (1.0 - (ny * ny)));
+            
+            //std::cout << c << ", " << nx << " | " << l << ", " << ny << std::endl;
+            //std::cout << l << ", " << c << " " << d << std::endl;
 
-            float rgb = abs(noise.octave3D(c / 50.0, l / 50.0, displacement, 2) * 255);
+            float rgb = abs(noise.octave3D(c / 50.0 , l / 50.0, displacement, 2) * 255 * d);
 
             rgb = (rgb + (1.0 - d)) / 2.0;
 
