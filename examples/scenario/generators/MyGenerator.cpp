@@ -17,28 +17,50 @@ std::vector<Color32> MyGenerator::Generate(int sideSize, float displacement)
             float nx = ((2.0 * (float)c + 1) / (float)sideSize) - 1.0;
             float ny = ((2.0 * (float)l + 1) / (float)sideSize) - 1.0;
             float d = std::min(1.0, ((nx * nx) + (ny * ny)) / sqrt(2.0));
-            //float d = 1.0 - (1.0 - (nx * nx) * (1.0 - (ny * ny)));
-            
-            //std::cout << c << ", " << nx << " | " << l << ", " << ny << std::endl;
-            //std::cout << l << ", " << c << " " << d << std::endl;
 
-            float rgb = abs(noise.octave3D(c / 50.0 , l / 50.0, displacement, 2) * 255 * d);
+            float rgb = abs(noise.octave3D(c / 50.0 , l / 50.0, displacement, 5) * d);
 
-            rgb = (rgb + (1.0 - d)) / 2.0;
+            rgb = (rgb + (1.0 - d)) * 255 / 2.0;
 
             float r, g, b;
 
-            if (rgb < 40)
+            //sand
+            if (rgb < 100 && rgb > 90)
+            {
+                r = 194;
+                g = 178;
+                b = 128;
+            }//blue
+            else if (rgb < 90)
             {
                 r = 0;
-                g = 0;
-                b = abs(rgb - 200);
-            }
+
+                g = rgb + 30;
+                if (g < 70)
+                    g = rgb + 70;
+
+                if (g > 100)
+                    g = (rgb / 20) + 100;
+
+                b = rgb + 90;
+                if (b < 148)
+                    b = rgb + 148;
+                    
+                if (b > 200)
+                    b = (rgb / 20) + 200;
+            }//green
             else
             {
-                r = 0;
-                g = abs(rgb - 200);
-                b = 0;
+                r = 34;
+                //g = 139;
+                g = rgb + 80;
+                if (g < 100)
+                    g = rgb + 100;
+
+                if (g > 200)
+                    g = (rgb / 20) + 200;
+
+                b = 34;
             }
 
             colors.emplace_back(r, g, b);
