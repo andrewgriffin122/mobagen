@@ -14,12 +14,17 @@ std::vector<Color32> MyGenerator::Generate(int sideSize, float displacement)
     {
         for (int c = 0; c < sideSize; c++)
         {
+            //https://www.redblobgames.com/maps/terrain-from-noise/
+            //Euclidean^2
+
+            //-1 <-> 1
             float nx = ((2.0 * (float)c + 1) / (float)sideSize) - 1.0;
             float ny = ((2.0 * (float)l + 1) / (float)sideSize) - 1.0;
             float d = std::min(1.0, ((nx * nx) + (ny * ny)) / sqrt(2.0));
 
             float rgb = abs(noise.octave3D(c / 50.0 , l / 50.0, displacement, 5) * d);
 
+            //new elevation using distance
             rgb = (rgb + (1.0 - d)) * 255 / 2.0;
 
             float r, g, b;
